@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equipa Merytu · Mapa de Relações</title>
+<style>
+  :root{
+    --ink:#1a1230;        /* roxo-quase-preto */
+    --paper:#f7f4fb;      /* lavanda muito clara */
+    --plum:#6b21a8;       /* roxo Merytu */
+    --plum-soft:#8b5cf6;
+    --plum-faint:#ede9fe;
+    --line:#e2dcef;
+    --muted:#6c6485;
+    --strong:#2b1d52;
+    --shadow:0 1px 2px rgba(40,20,80,.06),0 8px 28px rgba(60,30,110,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+
+  /* ---------- HEADER ---------- */
+  header.top{
+    padding:48px 28px 26px;max-width:1180px;margin:0 auto;
+  }
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--plum);font-weight:700;margin:0 0 10px;
+  }
+  h1{
+    font-size:clamp(2rem,5vw,3.4rem);line-height:1.02;margin:0 0 12px;
+    font-weight:800;letter-spacing:-.02em;color:var(--strong);
+  }
+  h1 .accent{
+    background:linear-gradient(110deg,var(--plum),var(--plum-soft));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{max-width:620px;color:var(--muted);font-size:1.02rem;margin:0}
+
+  /* ---------- TABS ---------- */
+  nav.tabs{
+    position:sticky;top:0;z-index:40;background:rgba(247,244,251,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .tabs-inner{max-width:1180px;margin:0 auto;display:flex;gap:4px;padding:0 22px}
+  .tab{
+    appearance:none;border:0;background:transparent;cursor:pointer;
+    padding:16px 14px;font-size:.93rem;font-weight:600;color:var(--muted);
+    border-bottom:2px solid transparent;font-family:inherit;
+  }
+  .tab[aria-selected="true"]{color:var(--plum);border-bottom-color:var(--plum)}
+  .tab:hover{color:var(--strong)}
+
+  main{max-width:1180px;margin:0 auto;padding:30px 22px 80px}
+  .panel{display:none}
+  .panel.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .section-note{color:var(--muted);font-size:.92rem;margin:0 0 22px;max-width:680px}
+
+  /* ---------- FACES GALLERY ---------- */
+  .faces{
+    display:grid;gap:14px;
+    grid-template-columns:repeat(auto-fill,minmax(112px,1fr));
+  }
+  .face{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:14px 8px 12px;text-align:center;box-shadow:var(--shadow);
+    cursor:pointer;transition:transform .15s,box-shadow .15s;
+  }
+  .face:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(70,30,120,.16)}
+  .avatar{
+    width:74px;height:74px;border-radius:50%;margin:0 auto 9px;
+    object-fit:cover;background:var(--plum-faint);display:block;
+    border:2.5px solid #fff;outline:2px solid var(--line);
+  }
+  .avatar.ph{
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:1.5rem;color:#fff;outline-color:transparent;
+  }
+  .face .nm{font-size:.84rem;font-weight:700;line-height:1.15;color:var(--strong)}
+  .face .rl{font-size:.7rem;color:var(--muted);margin-top:3px;line-height:1.2}
+  .chip-n{display:inline-block;margin-top:6px;font-size:.6rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.08em;color:var(--plum);
+    background:var(--plum-faint);padding:2px 7px;border-radius:99px}
+
+  /* ---------- PROFILE CARDS ---------- */
+  .filterbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .fbtn{
+    appearance:none;border:1px solid var(--line);background:#fff;cursor:pointer;
+    padding:7px 13px;border-radius:99px;font-size:.8rem;font-weight:600;
+    color:var(--muted);font-family:inherit;display:flex;align-items:center;gap:7px;
+  }
+  .fbtn .dot{width:9px;height:9px;border-radius:50%}
+  .fbtn[aria-pressed="true"]{border-color:var(--plum);color:var(--strong);background:var(--plum-faint)}
+
+  .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:20px;
+    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
+  }
+  .card-head{display:flex;gap:14px;align-items:center;padding:18px 18px 14px;
+    border-bottom:1px solid var(--line)}
+  .card-head .avatar{margin:0;width:60px;height:60px;flex:0 0 auto}
+  .card-head .who{min-width:0}
+  .card-head .who .nm{font-size:1.06rem;font-weight:800;color:var(--strong);line-height:1.1}
+  .card-head .who .rl{font-size:.82rem;color:var(--plum);font-weight:600;margin-top:2px}
+  .grouptag{margin-left:auto;font-size:.62rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:.07em;padding:4px 9px;border-radius:99px;color:#fff;white-space:nowrap;align-self:flex-start}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;padding:0 18px;margin-top:12px}
+  .badge{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    padding:3px 8px;border-radius:6px;background:#fde8ef;color:#be185d}
+  .badge.norte{background:#e0f2fe;color:#0369a1}
+  .badge.novo{background:#dcfce7;color:#15803d}
+
+  .qa{padding:14px 18px 4px}
+  .qa dl{margin:0}
+  .qa .row{padding:9px 0;border-top:1px solid var(--plum-faint)}
+  .qa .row:first-child{border-top:0}
+  .qa dt{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--plum);margin-bottom:3px}
+  .qa dd{margin:0;font-size:.88rem;color:var(--ink)}
+  .qa dd.dim{color:var(--muted);font-style:italic}
+  .card-foot{padding:12px 18px 16px;margin-top:auto}
+  .card-foot details summary{
+    cursor:pointer;font-size:.78rem;font-weight:700;color:var(--plum);list-style:none;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card-foot details summary::-webkit-details-marker{display:none}
+  .card-foot details summary::before{content:"▸";transition:transform .2s}
+  .card-foot details[open] summary::before{transform:rotate(90deg)}
+  .card-foot details .more{margin-top:10px}
+
+  /* ---------- WEB MAP ---------- */
+  .map-wrap{
+    position:relative;background:
+      radial-gradient(circle at 30% 20%,#fff,transparent 60%),
+      linear-gradient(180deg,#fbfaff,#f3eefb);
+    border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);
+  }
+  #web{display:block;width:100%;height:620px;touch-action:none}
+  .legend{
+    display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center;
+    padding:14px 18px;border-top:1px solid var(--line);background:#fff;font-size:.78rem;color:var(--muted)
+  }
+  .legend .it{display:flex;align-items:center;gap:7px}
+  .legend .sw{width:14px;height:14px;border-radius:50%}
+  .legend .ln{width:26px;height:0}
+  .legend .ln.s{border-top:3px solid var(--plum)}
+  .legend .ln.w{border-top:2px dashed #c4b5e0}
+  .map-tools{position:absolute;top:14px;right:14px;display:flex;gap:8px;z-index:5}
+  .map-tools button{
+    appearance:none;border:1px solid var(--line);background:#fff;border-radius:10px;
+    width:38px;height:38px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);color:var(--strong)
+  }
+  .map-hint{position:absolute;left:16px;bottom:14px;font-size:.74rem;color:var(--muted);
+    background:rgba(255,255,255,.8);padding:6px 11px;border-radius:8px;backdrop-filter:blur(4px)}
+
+  .tooltip{
+    position:fixed;pointer-events:none;z-index:100;opacity:0;transition:opacity .12s;
+    background:var(--ink);color:#fff;padding:10px 13px;border-radius:12px;max-width:250px;
+    font-size:.8rem;box-shadow:0 10px 30px rgba(0,0,0,.3)
+  }
+  .tooltip b{display:block;font-size:.92rem;margin-bottom:2px}
+  .tooltip .tr{color:#d9ccff;font-size:.74rem}
+  .tooltip .tm{margin-top:7px;color:#cdbff0;font-size:.72rem;line-height:1.35}
+
+  footer{max-width:1180px;margin:0 auto;padding:0 22px 50px;color:var(--muted);font-size:.78rem}
+  footer .rule{height:1px;background:var(--line);margin-bottom:18px}
+
+  @media(max-width:560px){
+    #web{height:520px}
+    .cards{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Merytu · Dia de equipa · 30 jun 2026</p>
+  <h1>A equipa, <span class="accent">por dentro</span>.</h1>
+  <p class="lede">Perfis de quem respondeu ao questionário, rostos para decorar nomes, e um mapa
+  vivo das relações profissionais — quem trabalha lado a lado, quem se cruza pouco, e onde as funções se ligam.</p>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-panel="rede">Mapa de relações</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="perfis">Perfis</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="rostos">Rostos</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ============ MAPA ============ -->
+  <section class="panel active" id="rede" role="tabpanel">
+    <p class="section-note">Cada nó é uma pessoa, colorida pela sua área. As linhas <b>cheias</b> são relações de
+    trabalho próximo (trabalha com / recorre a); as <b>tracejadas</b> são contacto reduzido. Arrasta os nós,
+    passa o rato por cima para ver detalhes, e usa os botões para aproximar. Quem responde puxa as linhas — por isso
+    o centro mostra os núcleos mais ligados.</p>
+    <div class="map-wrap">
+      <div class="map-tools">
+        <button id="zin" title="Aproximar">+</button>
+        <button id="zout" title="Afastar">−</button>
+        <button id="zreset" title="Repor">⟳</button>
+      </div>
+      <svg id="web"></svg>
+      <div class="map-hint">Arrasta para reorganizar · roda do rato para zoom</div>
+    </div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <!-- ============ PERFIS ============ -->
+  <section class="panel" id="perfis" role="tabpanel">
+    <p class="section-note">Doze respostas ao questionário. Filtra por área para preparar dinâmicas, conversas ou
+    a logística do dia. Os detalhes pessoais (alimentação, limitações) estão visíveis no fim de cada cartão.</p>
+    <div class="filterbar" id="filterbar"></div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- ============ ROSTOS ============ -->
+  <section class="panel" id="rostos" role="tabpanel">
+    <p class="section-note">Galeria rápida para associar nomes a caras antes do dia. Clica numa pessoa para abrir o
+    seu perfil completo.</p>
+    <div class="faces" id="faces"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="rule"></div>
+  Fotos da página oficial <a href="https://merytu.com/about">merytu.com/about</a>.
+  Relações construídas a partir das respostas ao questionário interno. Filipe e Bárbara ainda sem foto no site
+  (mostrados com iniciais). Documento de apoio à facilitação — uso interno.
+</footer>
+
+<div class="tooltip" id="tip"></div>
+
+<script>
+// ============================================================
+// MERYTU — Dados da equipa (respostas ao questionário + fotos oficiais)
+// Fotos: CDN oficial merytu.com/about
+// ============================================================
+
+const CDN = "https://cdn.prod.website-files.com/695bec57130626a1c9a58414/";
+
+// --- Pessoas que responderam ao questionário ---
+const PEOPLE = [
+  {
+    id: "med",
+    nome: "Mahomed Moosa",
+    alcunha: "Med",
+    cargo: "Full Stack Developer",
+    cargoSite: "Full Stack Forgemaster",
+    grupo: "tech",
+    foto: CDN + "6963d0830e10989222122004_Mahomed.avif",
+    respondeu: true,
+    funcao: "Criar e resolver coisas novas na aplicação.",
+    trabalhaCom: "Diogo Paço",
+    menosContacto: "Liliana",
+    recorre: "Diogo Paço",
+    naoConhece: "Filipe, Bárbara, Gabriel…",
+    ambiente: "Top",
+    energia: "Desafios técnicos.",
+    trabalhar: "Melhorar competências técnicas.",
+    equipa: "Continuar a crescer e ser referência no mercado.",
+    mudar: "Trazer mais vezes a Ninja.",
+    info: "Carne só halal; pode ser peixe ou vegetariano (menos preferido).",
+    sair: "Conhecer melhor os colegas."
+  },
+  {
+    id: "liliana",
+    nome: "Liliana Tavares",
+    cargo: "Finance Supervisor",
+    cargoSite: "Finance Supervisor Fairy",
+    grupo: "finance",
+    foto: CDN + "6963d05c2d02027389c3af28_Liliana.avif",
+    respondeu: true,
+    funcao: "Pagamentos, recebimentos e processos contabilísticos e financeiros.",
+    trabalhaCom: "Diogo Paço e Lorena Alves (operacional do dia-a-dia).",
+    menosContacto: "Mariana Dionísio e Beatriz Santos (estão no Norte).",
+    recorre: "Rita Harries, Joana Valente ou João Santos (depende do assunto).",
+    naoConhece: "Os colegas que entraram recentemente.",
+    ambiente: "Um por todos e todos por um.",
+    energia: "Encontrar soluções para os desafios que vão surgindo.",
+    trabalhar: "Organização das tarefas e assertividade.",
+    equipa: "O crescimento exponencial e internacionalização da merytu.",
+    mudar: "Processos financeiros mais integrados e maior envolvimento da área financeira nas decisões.",
+    info: "Não come derivados do leite (queijo, manteiga, natas…).",
+    sair: "Memórias de um dia diferente com a equipa de que tanto gosto :)"
+  },
+  {
+    id: "gabriel_p",
+    nome: "Gabriel Peixoto",
+    cargo: "Implementation Agent",
+    cargoSite: "Implementation Agent Navigator",
+    grupo: "ops",
+    foto: CDN + "69d822f8d3cd879fc968a698_gabriel.png",
+    respondeu: true,
+    funcao: "Implementation Agent.",
+    trabalhaCom: "Filipe, Susana, Lorena, Bárbara, Mateus, Gabriel e Diogo.",
+    menosContacto: "Adriana, Carol, Mohamed e Liliana.",
+    recorre: "Susana.",
+    naoConhece: "Carol e Mohamed.",
+    ambiente: "Flexível e de ajuda mútua.",
+    energia: "Saber que contribui para o sucesso das operações e para a merytu. Elogios ao desempenho.",
+    trabalhar: "Deixar-se afetar menos emocionalmente com o que terceiros pensam, quando é injusto.",
+    equipa: "A internacionalização da empresa.",
+    mudar: "Ter uma pessoa específica de RH; melhor estrutura de office; regime híbrido.",
+    info: "Não gosta de caldos e sopas.",
+    sair: "Saber se os colegas realmente confiam nele."
+  },
+  {
+    id: "ronaldo",
+    nome: "Ronaldo Silva",
+    cargo: "CTO & Co-founder",
+    cargoSite: "Chief Technology Wizard",
+    grupo: "tech",
+    foto: CDN + "69dd70d4f65e948770fe8ce7_team-119.jpg",
+    respondeu: true,
+    funcao: "CTO e Co-founder.",
+    trabalhaCom: "Diogo Paço, João Santos, Ju.",
+    menosContacto: "Customer Care em geral.",
+    recorre: "A referência de cada departamento, conforme o assunto.",
+    naoConhece: "Conhece o suficiente dentro das funções de cada um.",
+    ambiente: "Colaborativo, com departamentos a trabalhar juntos e foco real nos desafios de clientes e meryters.",
+    energia: "Ver o impacto direto: hotel com staffing rápido, meryter a encontrar trabalho, plataforma mais rápida. Conectar o código às pessoas.",
+    trabalhar: "—",
+    equipa: "Tornar a merytu a plataforma de referência em staffing hospitalar em Portugal — ubíqua no nicho.",
+    mudar: "—",
+    info: "—",
+    sair: "—"
+  },
+  {
+    id: "mariana",
+    nome: "Mariana Dionísio",
+    cargo: "Regional Business Development Manager",
+    cargoSite: "Jedi Sales Manager",
+    grupo: "sales",
+    nucleo: "norte",
+    foto: CDN + "6963d0949bb95b983092b912_Mariana.avif",
+    respondeu: true,
+    funcao: "Regional Business Development Manager — clientes, equipa e meryters, garantindo o aumento da produção no Norte. Forte ligação a Paid Media e Marketing.",
+    trabalhaCom: "Susana Ferreira e Beatriz Santos. Diariamente com Gabriel (implementation) e Customer Care — Lorena, Bárbara, Mateus e Gabriel.",
+    menosContacto: "Med, infelizmente — gostaria de ter mais.",
+    recorre: "Resolve sozinha ou contacta quem é necessário. Se for subjetivo, fala primeiro com a Susana.",
+    naoConhece: "Todos — nunca conhecemos ninguém bem o suficiente.",
+    ambiente: "Muito bom, mas tenso, e com muita coisa por dizer.",
+    energia: "Presença em eventos, construir e realizar o evento, contacto diário com o cliente, e trabalhar com meryters — ouvi-los e saber as suas histórias.",
+    trabalhar: "Trazer de volta a Mariana positiva e com o foco de antigamente.",
+    equipa: "O mundo!",
+    mudar: "Muitos processos não fazem sentido; comunicação e fluxo de tarefas fracos; agir mais como empresa séria.",
+    info: "Ai de ti que não saibas já tudo sobre mim.",
+    sair: "Sinceridade <3"
+  },
+  {
+    id: "diogo",
+    nome: "Diogo Paço",
+    cargo: "Product Owner / Developer",
+    cargoSite: "Ninja Product Owner",
+    grupo: "tech",
+    foto: CDN + "69dd711392b95f96eb3f7aa3_team-113.jpg",
+    respondeu: true,
+    funcao: "Product Owner e developer de backend. Também desbloqueio operacional, resolução de problemas da app e gestão da análise de dados.",
+    trabalhaCom: "Ronaldo (CTO), a equipa de developers e a trainee de análise de dados. Fala com toda a equipa, sobretudo Customer Care.",
+    menosContacto: "Carol (marketing) — áreas que não se ligam diretamente.",
+    recorre: "Ronaldo.",
+    naoConhece: "As pessoas que entraram mais recentemente.",
+    ambiente: "Bom no geral; apesar do stress diário, há preocupação mútua.",
+    energia: "Construir e pensar soluções de desenvolvimento; deixar procedimentos organizados e fluidos.",
+    trabalhar: "Continuar a evoluir tecnicamente.",
+    equipa: "Sucesso no geral; montar uma estrutura que retire o stress diário.",
+    mudar: "Estruturar melhor alguns processos (difícil, porque todos os dias surge algo novo).",
+    info: "Tem uma limitação física; dependendo da atividade pode ou não fazer.",
+    sair: "—"
+  },
+  {
+    id: "rita",
+    nome: "Rita Harries",
+    cargo: "Head of Expansion",
+    cargoSite: "Expansion Twinkle Manager",
+    grupo: "sales",
+    foto: CDN + "6963d0b5bcfda6df6879bd39_Rita.avif",
+    respondeu: true,
+    funcao: "Head of Expansion.",
+    trabalhaCom: "Susana Ferreira — lideram juntas a equipa de business development.",
+    menosContacto: "Bárbara — apenas pelo pouco tempo de convívio.",
+    recorre: "Susana Ferreira.",
+    naoConhece: "Med.",
+    ambiente: "Excelente, proativo, com co-ajuda constante.",
+    energia: "Novos desafios, conquista de uma top account, o sucesso de todos.",
+    trabalhar: "Distanciamento emocional.",
+    equipa: "Estar top of mind de qualquer empresa que precise de profissionais — crescer para estádios, catering, saúde, logística.",
+    mudar: "Comunicação e interligação departamental / projeto.",
+    info: "Operada ao ouvido esquerdo (sem sensibilidade) — não pode ter água no ouvido nem usar phones. Alérgica a pêssego. Não aprecia marisco; adora carne e doces.",
+    sair: "Sentir a dinâmica de colegas que não se veem todos os dias e perceber que se alcança muito com criatividade."
+  },
+  {
+    id: "beatriz",
+    nome: "Beatriz Santos",
+    cargo: "Coordenadora de Implementação",
+    cargoSite: "Implementation Coordinator",
+    grupo: "ops",
+    nucleo: "norte",
+    foto: CDN + "69dd70f559d79903094a94bb_team-116.jpg",
+    respondeu: true,
+    funcao: "Gerir e coordenar contas de grande volume na zona Norte.",
+    trabalhaCom: "Mariana Dionísio — são as duas do Porto.",
+    menosContacto: "Med.",
+    recorre: "Mariana.",
+    naoConhece: "Diogo e Med.",
+    ambiente: "Incrível.",
+    energia: "Clientes felizes com o seu trabalho e conhecer meryters simpáticos e responsáveis.",
+    trabalhar: "Aceitar que nem sempre as coisas correm como queremos.",
+    equipa: "Gigs infinitos diariamente.",
+    mudar: "Comunicação — falarmos mais entre equipas.",
+    info: "Come de tudo e adora chocolate.",
+    sair: "Saber mais sobre os colegas e sentir-se feliz e alegre."
+  },
+  {
+    id: "susana",
+    nome: "Susana Ferreira",
+    cargo: "Head of Business Development",
+    cargoSite: "Senior Sales Manager Warrior",
+    grupo: "sales",
+    foto: CDN + "6963d0cbde18b03c4180b6b3_Susana.avif",
+    respondeu: true,
+    funcao: "Estratégia comercial — mas, sendo empresa pequena, faz de tudo: vendas, operações, eventos, parcerias, e estruturação do departamento.",
+    trabalhaCom: "Mariana e Rita (próximas, amigas). Depois Beatriz, Gabriel Peixoto e Filipe Segurado.",
+    menosContacto: "Ronaldo e Med — contacto pontual por funções muito distintas (o Diogo faz a ponte).",
+    recorre: "Rita (na ausência dela, João ou Mariana).",
+    naoConhece: "Quase todos, exceto Rita, Mariana e Bia. No office, cada um na sua sala; não há hábito de almoçar em conjunto.",
+    ambiente: "Reina a entreajuda e colaboração; muito saudável. Há confiança e espaço para crescer — mas elementos sobrecarregados e histórico de burnouts.",
+    energia: "Clientes satisfeitos e a faturar.",
+    trabalhar: "Liderança / gestão de equipas.",
+    equipa: "Faturação que permita aumentar a equipa, evitar burnouts, mudar de escritório e aumentos para todos.",
+    mudar: "Processos desorganizados com o crescimento rápido; muito reativos e pouco proativos por falta de tempo e organização.",
+    info: "Nada. Tudo impecável!",
+    sair: "Sair mais unidos, com relações fortalecidas, e que momentos como este aconteçam com mais frequência."
+  },
+  {
+    id: "adriana",
+    nome: "Adriana Silva",
+    cargo: "Diretora Criativa",
+    cargoSite: "Creative Manager Rockstar",
+    grupo: "marketing",
+    foto: CDN + "69dd70e8683a2c21e40b69c4_team-117.jpg",
+    respondeu: true,
+    funcao: "Diretora criativa — responsável de design e marketing.",
+    trabalhaCom: "Carolina.",
+    menosContacto: "Beatriz.",
+    recorre: "João.",
+    naoConhece: "Filipe.",
+    ambiente: "Fabuloso.",
+    energia: "Desafios que parecem impossíveis.",
+    trabalhar: "Delegar mais o trabalho.",
+    equipa: "Sermos um unicórnio.",
+    mudar: "Mais team building :)",
+    info: "Competitiva, mas tem bom perder :)",
+    sair: "Sentir que fortalecemos os laços de amizade."
+  },
+  {
+    id: "filipe",
+    nome: "Filipe Segurado",
+    cargo: "Implementation Agent",
+    cargoSite: "Implementation Agent",
+    grupo: "ops",
+    novo: true,
+    foto: null, // não consta da página oficial; placeholder
+    respondeu: true,
+    funcao: "Onboarding e acompanhamento das empresas após adoção da app.",
+    trabalhaCom: "Rita Harries, Susana Ferreira, Gabriel Peixoto.",
+    menosContacto: "Mariana Dionísio e Beatriz Santos — colegas do Norte.",
+    recorre: "Qualquer elemento direto da sua equipa.",
+    naoConhece: "Já conhece minimamente todos (entrou a 1 de junho de 2026).",
+    ambiente: "Saudável, descontraído, responsável, autónomo, com cada um a dar o seu melhor.",
+    energia: "A ideologia da empresa.",
+    trabalhar: "Sair da zona de conforto e usar as suas competências nas novas responsabilidades.",
+    equipa: "O objetivo da empresa; manter ou evoluir onde haja margem.",
+    mudar: "Maior automatização de processos manuais e centralização da informação.",
+    info: "Muita confiança entre todos, sobretudo do CEO para a equipa.",
+    sair: "Está em 'modo esponja' — muito ainda para sentir e saber."
+  },
+  {
+    id: "barbara",
+    nome: "Bárbara Barbosa",
+    cargo: "Customer Care Agent",
+    cargoSite: "Customer Experience Specialist",
+    grupo: "care",
+    nova: true,
+    foto: null, // não consta da página oficial; placeholder
+    respondeu: true,
+    funcao: "Customer Care / Experience — resolução de problemas, atendimento, especialista da app e da jornada do cliente.",
+    trabalhaCom: "Lorena — supervisora, parceira, que acompanha tudo e dá direção.",
+    menosContacto: "Med, Caue e Ronaldo (bastidores) e Lili do financeiro.",
+    recorre: "Lorena, ou alguém do setor específico conforme o tema.",
+    naoConhece: "Várias pessoas — só está há 3 meses.",
+    ambiente: "Ainda a criar rotinas de colaboração; muito potencial para evoluir na comunicação e entreajuda.",
+    energia: "Colaboração entre equipas, ver resultados e processos a evoluir, engajamento de todos.",
+    trabalhar: "Tornar-se especialista, conhecer processos e métricas, colaborar em ações estratégicas e ganhar confiança.",
+    equipa: "Automatizar processos manuais e agir como sucesso dos meryters, com atendimentos de excelência.",
+    mudar: "Fortalecer a cultura, desenhar bem os valores e criar o EVP; melhorar a comunicação.",
+    info: "Nenhuma limitação nem preferência alimentar.",
+    sair: "Ver a equipa com maior coesão, energia renovada e comunicação mais fluida."
+  }
+];
+
+// --- Pessoas mencionadas mas que não responderam (para a teia ficar completa) ---
+const MENTIONED = [
+  { id: "joao", nome: "João Silva Santos", cargo: "CEO & Co-founder", grupo: "lead", foto: CDN + "69dd70caf96e5d119dfed3da_team-120.jpg" },
+  { id: "lorena", nome: "Lorena Alves", cargo: "Customer Care (Supervisora)", grupo: "care", foto: CDN + "6963d070bcfda6df6879b57b_Lorena.avif" },
+  { id: "carolina", nome: "Carolina Mateus", cargo: "Marketing & Media", grupo: "marketing", foto: CDN + "69dd710a417bda7d95240356_team-114.jpg" },
+  { id: "joana", nome: "Joana Valente", cargo: "Operations Manager", grupo: "ops", foto: CDN + "6963d04cc277028eeedd5fd3_Joana.avif" },
+  { id: "carla", nome: "Carla Andrade", cargo: "CFO", grupo: "finance", foto: CDN + "69dd70fe23dfc6bb065ca084_team-115.jpg" },
+  { id: "mateus", nome: "Mateus Alves", cargo: "Customer Care", grupo: "care", foto: CDN + "69d82330a44e01752c191b61_Mateus.png" },
+  { id: "gabriel_b", nome: "Gabriel Barros", cargo: "Customer Care", grupo: "care", foto: CDN + "69dd71200b402a9ab7bdad48_team-110.jpg" },
+  { id: "rafica", nome: "Rafica Dawood", cargo: "Customer Care", grupo: "care", foto: CDN + "6963d0a66a7c8b251d4af6ba_Rafika.avif" }
+];
+
+// --- Cores por grupo ---
+const GROUPS = {
+  lead:      { label: "Liderança", color: "#7c3aed" },
+  tech:      { label: "Tech / Produto", color: "#2563eb" },
+  ops:       { label: "Implementação / Ops", color: "#0891b2" },
+  sales:     { label: "Business Development", color: "#db2777" },
+  marketing: { label: "Marketing / Design", color: "#ea580c" },
+  finance:   { label: "Financeiro", color: "#16a34a" },
+  care:      { label: "Customer Care", color: "#ca8a04" }
+};
+
+// --- Relações declaradas (origem -> alvo). tipo: "forte" (trabalha com / recorre) ou "fraca" (menos contacto) ---
+// Construídas a partir das respostas de cada pessoa.
+const EDGES = [
+  // Med
+  { from: "med", to: "diogo", tipo: "forte" },
+  { from: "med", to: "liliana", tipo: "fraca" },
+  { from: "med", to: "filipe", tipo: "fraca" },
+  { from: "med", to: "barbara", tipo: "fraca" },
+  { from: "med", to: "gabriel_p", tipo: "fraca" },
+  // Liliana
+  { from: "liliana", to: "diogo", tipo: "forte" },
+  { from: "liliana", to: "lorena", tipo: "forte" },
+  { from: "liliana", to: "mariana", tipo: "fraca" },
+  { from: "liliana", to: "beatriz", tipo: "fraca" },
+  { from: "liliana", to: "rita", tipo: "forte" },
+  { from: "liliana", to: "joana", tipo: "forte" },
+  { from: "liliana", to: "joao", tipo: "forte" },
+  // Gabriel Peixoto
+  { from: "gabriel_p", to: "filipe", tipo: "forte" },
+  { from: "gabriel_p", to: "susana", tipo: "forte" },
+  { from: "gabriel_p", to: "lorena", tipo: "forte" },
+  { from: "gabriel_p", to: "barbara", tipo: "forte" },
+  { from: "gabriel_p", to: "mateus", tipo: "forte" },
+  { from: "gabriel_p", to: "diogo", tipo: "forte" },
+  { from: "gabriel_p", to: "adriana", tipo: "fraca" },
+  { from: "gabriel_p", to: "carolina", tipo: "fraca" },
+  { from: "gabriel_p", to: "med", tipo: "fraca" },
+  { from: "gabriel_p", to: "liliana", tipo: "fraca" },
+  // Ronaldo
+  { from: "ronaldo", to: "diogo", tipo: "forte" },
+  { from: "ronaldo", to: "joao", tipo: "forte" },
+  { from: "ronaldo", to: "joana", tipo: "forte" },
+  // Mariana
+  { from: "mariana", to: "susana", tipo: "forte" },
+  { from: "mariana", to: "beatriz", tipo: "forte" },
+  { from: "mariana", to: "gabriel_p", tipo: "forte" },
+  { from: "mariana", to: "lorena", tipo: "forte" },
+  { from: "mariana", to: "barbara", tipo: "forte" },
+  { from: "mariana", to: "mateus", tipo: "forte" },
+  { from: "mariana", to: "med", tipo: "fraca" },
+  // Diogo
+  { from: "diogo", to: "ronaldo", tipo: "forte" },
+  { from: "diogo", to: "carolina", tipo: "fraca" },
+  // Rita
+  { from: "rita", to: "susana", tipo: "forte" },
+  { from: "rita", to: "barbara", tipo: "fraca" },
+  { from: "rita", to: "med", tipo: "fraca" },
+  // Beatriz
+  { from: "beatriz", to: "mariana", tipo: "forte" },
+  { from: "beatriz", to: "med", tipo: "fraca" },
+  { from: "beatriz", to: "diogo", tipo: "fraca" },
+  // Susana
+  { from: "susana", to: "mariana", tipo: "forte" },
+  { from: "susana", to: "rita", tipo: "forte" },
+  { from: "susana", to: "beatriz", tipo: "forte" },
+  { from: "susana", to: "gabriel_p", tipo: "forte" },
+  { from: "susana", to: "filipe", tipo: "forte" },
+  { from: "susana", to: "ronaldo", tipo: "fraca" },
+  { from: "susana", to: "med", tipo: "fraca" },
+  { from: "susana", to: "carolina", tipo: "fraca" },
+  // Adriana
+  { from: "adriana", to: "carolina", tipo: "forte" },
+  { from: "adriana", to: "joao", tipo: "forte" },
+  { from: "adriana", to: "beatriz", tipo: "fraca" },
+  { from: "adriana", to: "filipe", tipo: "fraca" },
+  // Filipe
+  { from: "filipe", to: "rita", tipo: "forte" },
+  { from: "filipe", to: "susana", tipo: "forte" },
+  { from: "filipe", to: "gabriel_p", tipo: "forte" },
+  { from: "filipe", to: "mariana", tipo: "fraca" },
+  { from: "filipe", to: "beatriz", tipo: "fraca" },
+  // Bárbara
+  { from: "barbara", to: "lorena", tipo: "forte" },
+  { from: "barbara", to: "med", tipo: "fraca" },
+  { from: "barbara", to: "ronaldo", tipo: "fraca" },
+  { from: "barbara", to: "liliana", tipo: "fraca" }
+];
+
+</script>
+<script>
+// ---------- index helpers ----------
+const ALL = [...PEOPLE, ...MENTIONED];
+const byId = Object.fromEntries(ALL.map(p=>[p.id,p]));
+function initials(name){return name.split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase();}
+function gcolor(g){return (GROUPS[g]||{color:"#999"}).color;}
+
+// ---------- TABS ----------
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected","false"));
+    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+    t.setAttribute("aria-selected","true");
+    document.getElementById(t.dataset.panel).classList.add("active");
+    if(t.dataset.panel==="rede") setTimeout(()=>SIM&&SIM.kick(),30);
+  });
+});
+function gotoProfile(id){
+  document.querySelector('.tab[data-panel="perfis"]').click();
+  const el=document.getElementById("card-"+id);
+  if(el){el.scrollIntoView({behavior:"smooth",block:"center"});
+    el.style.outline="2px solid var(--plum)";el.style.outlineOffset="3px";
+    setTimeout(()=>el.style.outline="none",1600);}
+}
+
+// ---------- avatar element ----------
+function avatarEl(p,cls){
+  if(p.foto){
+    const img=document.createElement("img");
+    img.className="avatar "+(cls||"");img.src=p.foto;img.alt=p.nome;img.loading="lazy";
+    img.onerror=function(){const ph=phEl(p,cls);this.replaceWith(ph);};
+    return img;
+  }
+  return phEl(p,cls);
+}
+function phEl(p,cls){
+  const d=document.createElement("div");
+  d.className="avatar ph "+(cls||"");
+  d.style.background="linear-gradient(135deg,"+gcolor(p.grupo)+","+gcolor(p.grupo)+"cc)";
+  d.textContent=initials(p.nome);return d;
+}
+
+// ---------- ROSTOS ----------
+const facesBox=document.getElementById("faces");
+PEOPLE.forEach(p=>{
+  const c=document.createElement("div");c.className="face";c.onclick=()=>gotoProfile(p.id);
+  c.appendChild(avatarEl(p));
+  const nm=document.createElement("div");nm.className="nm";nm.textContent=p.alcunha?p.nome+" · "+p.alcunha:p.nome;
+  const rl=document.createElement("div");rl.className="rl";rl.textContent=p.cargo;
+  c.appendChild(nm);c.appendChild(rl);
+  if(p.nucleo==="norte"){const ch=document.createElement("span");ch.className="chip-n";ch.textContent="Norte";c.appendChild(ch);}
+  facesBox.appendChild(c);
+});
+
+// ---------- PERFIS (filtros + cartões) ----------
+const usedGroups=[...new Set(PEOPLE.map(p=>p.grupo))];
+const fbar=document.getElementById("filterbar");
+let activeFilter="todos";
+function mkFilter(key,label,color){
+  const b=document.createElement("button");b.className="fbtn";b.setAttribute("aria-pressed",key==="todos");
+  if(color){const d=document.createElement("span");d.className="dot";d.style.background=color;b.appendChild(d);}
+  b.appendChild(document.createTextNode(label));
+  b.onclick=()=>{activeFilter=key;[...fbar.children].forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");renderCards();};
+  fbar.appendChild(b);
+}
+mkFilter("todos","Todos");
+usedGroups.forEach(g=>mkFilter(g,GROUPS[g].label,GROUPS[g].color));
+
+const cardsBox=document.getElementById("cards");
+function row(dt,dd,dim){
+  if(!dd||dd==="—")return"";
+  return '<div class="row"><dt>'+dt+'</dt><dd'+(dim?' class="dim"':'')+'>'+dd+'</dd></div>';
+}
+function renderCards(){
+  cardsBox.innerHTML="";
+  PEOPLE.filter(p=>activeFilter==="todos"||p.grupo===activeFilter).forEach(p=>{
+    const card=document.createElement("div");card.className="card";card.id="card-"+p.id;
+    const head=document.createElement("div");head.className="card-head";
+    head.appendChild(avatarEl(p));
+    const who=document.createElement("div");who.className="who";
+    who.innerHTML='<div class="nm">'+p.nome+(p.alcunha?' <span style="color:var(--muted);font-weight:600">· '+p.alcunha+'</span>':'')+
+      '</div><div class="rl">'+p.cargo+'</div>';
+    head.appendChild(who);
+    const tag=document.createElement("span");tag.className="grouptag";
+    tag.style.background=gcolor(p.grupo);tag.textContent=GROUPS[p.grupo].label;
+    head.appendChild(tag);
+    card.appendChild(head);
+
+    let badges="";
+    if(p.nucleo==="norte")badges+='<span class="badge norte">Equipa Norte</span>';
+    if(p.novo||p.nova)badges+='<span class="badge novo">Entrou em 2026</span>';
+    if(badges){const b=document.createElement("div");b.className="badges";b.innerHTML=badges;card.appendChild(b);}
+
+    const qa=document.createElement("div");qa.className="qa";const dl=document.createElement("dl");
+    dl.innerHTML=
+      row("Função",p.funcao)+
+      row("Trabalha mais com",p.trabalhaCom)+
+      row("Menos contacto",p.menosContacto)+
+      row("Recorre primeiro a",p.recorre)+
+      row("Ainda não conhece bem",p.naoConhece,true)+
+      row("Ambiente, numa frase",p.ambiente)+
+      row("O que lhe dá energia",p.energia);
+    qa.appendChild(dl);card.appendChild(qa);
+
+    const foot=document.createElement("div");foot.className="card-foot";
+    const det=document.createElement("details");
+    det.innerHTML='<summary>Mais sobre '+(p.alcunha||p.nome.split(" ")[0])+'</summary>'+
+      '<dl class="more">'+
+        row("Quer trabalhar em si",p.trabalhar)+
+        row("O que quer para a equipa",p.equipa)+
+        row("Mudaria na Merytu",p.mudar)+
+        row("Para o dia (alimentação / limitações)",p.info)+
+        row("Quer sair a sentir",p.sair)+
+      '</dl>';
+    foot.appendChild(det);card.appendChild(foot);
+    cardsBox.appendChild(card);
+  });
+}
+renderCards();
+
+// ---------- LEGENDA ----------
+const lg=document.getElementById("legend");
+usedGroups.concat(["lead","care"].filter(g=>!usedGroups.includes(g))).forEach(g=>{
+  const it=document.createElement("span");it.className="it";
+  it.innerHTML='<span class="sw" style="background:'+gcolor(g)+'"></span>'+GROUPS[g].label;
+  lg.appendChild(it);
+});
+lg.insertAdjacentHTML("beforeend",
+  '<span class="it"><span class="ln s"></span>Trabalho próximo</span>'+
+  '<span class="it"><span class="ln w"></span>Contacto reduzido</span>');
+
+// ====================================================================
+//  TEIA DE ARANHA — força dirigida (sem dependências)
+// ====================================================================
+const SIM = (function(){
+  const svg=document.getElementById("web");
+  const tip=document.getElementById("tip");
+  let W=svg.clientWidth||900, H=svg.clientHeight||620;
+  const NS="http://www.w3.org/2000/svg";
+
+  // só nós que aparecem em alguma relação
+  const usedIds=new Set();EDGES.forEach(e=>{usedIds.add(e.from);usedIds.add(e.to);});
+  const nodes=ALL.filter(p=>usedIds.has(p.id)).map(p=>({
+    id:p.id,p,
+    x:W/2+(Math.random()-.5)*260,y:H/2+(Math.random()-.5)*260,vx:0,vy:0,
+    r: p.respondeu?20:15, fixed:false
+  }));
+  const nmap=Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const links=EDGES.filter(e=>nmap[e.from]&&nmap[e.to]).map(e=>({s:nmap[e.from],t:nmap[e.to],tipo:e.tipo}));
+  // grau (nº de ligações) -> tamanho
+  const deg={};links.forEach(l=>{deg[l.s.id]=(deg[l.s.id]||0)+1;deg[l.t.id]=(deg[l.t.id]||0)+1;});
+  nodes.forEach(n=>{n.r = 13 + Math.min(14,(deg[n.id]||0)*1.6) + (n.p.respondeu?3:0);});
+
+  // viewport transform
+  let scale=1, panx=0, pany=0;
+  const gRoot=document.createElementNS(NS,"g");svg.appendChild(gRoot);
+  const gLinks=document.createElementNS(NS,"g");gRoot.appendChild(gLinks);
+  const gNodes=document.createElementNS(NS,"g");gRoot.appendChild(gNodes);
+  function applyT(){gRoot.setAttribute("transform","translate("+panx+","+pany+") scale("+scale+")");}
+
+  // build link elements
+  const linkEls=links.map(l=>{
+    const ln=document.createElementNS(NS,"line");
+    ln.setAttribute("stroke", l.tipo==="forte" ? "#6b21a8" : "#c4b5e0");
+    ln.setAttribute("stroke-width", l.tipo==="forte" ? 2.4 : 1.4);
+    ln.setAttribute("stroke-linecap","round");
+    if(l.tipo!=="forte")ln.setAttribute("stroke-dasharray","2 6");
+    ln.setAttribute("opacity", l.tipo==="forte"?0.55:0.5);
+    gLinks.appendChild(ln);return ln;
+  });
+
+  // clip for round photos
+  const defs=document.createElementNS(NS,"defs");svg.appendChild(defs);
+
+  const nodeEls=nodes.map(n=>{
+    const g=document.createElementNS(NS,"g");g.style.cursor="grab";
+    const ring=document.createElementNS(NS,"circle");
+    ring.setAttribute("r",n.r+3);ring.setAttribute("fill","#fff");
+    ring.setAttribute("stroke",gcolor(n.p.grupo));ring.setAttribute("stroke-width",n.p.respondeu?3:1.5);
+    if(!n.p.respondeu)ring.setAttribute("stroke-dasharray","3 3");
+    g.appendChild(ring);
+
+    if(n.p.foto){
+      const cid="clip-"+n.id;
+      const cp=document.createElementNS(NS,"clipPath");cp.setAttribute("id",cid);
+      const cc=document.createElementNS(NS,"circle");cc.setAttribute("r",n.r);
+      cp.appendChild(cc);defs.appendChild(cp);
+      const img=document.createElementNS(NS,"image");
+      img.setAttributeNS("http://www.w3.org/1999/xlink","href",n.p.foto);
+      img.setAttribute("href",n.p.foto);
+      img.setAttribute("x",-n.r);img.setAttribute("y",-n.r);
+      img.setAttribute("width",n.r*2);img.setAttribute("height",n.r*2);
+      img.setAttribute("preserveAspectRatio","xMidYMid slice");
+      img.setAttribute("clip-path","url(#"+cid+")");
+      g.appendChild(img);
+    }else{
+      const c=document.createElementNS(NS,"circle");
+      c.setAttribute("r",n.r);c.setAttribute("fill",gcolor(n.p.grupo));g.appendChild(c);
+      const t=document.createElementNS(NS,"text");
+      t.setAttribute("text-anchor","middle");t.setAttribute("dy",".34em");
+      t.setAttribute("fill","#fff");t.setAttribute("font-size",n.r*0.8);
+      t.setAttribute("font-weight","800");t.textContent=initials(n.p.nome);
+      g.appendChild(t);
+    }
+    // label
+    const lab=document.createElementNS(NS,"text");
+    lab.setAttribute("text-anchor","middle");lab.setAttribute("y",n.r+15);
+    lab.setAttribute("font-size","11");lab.setAttribute("font-weight","700");
+    lab.setAttribute("fill","#2b1d52");
+    lab.textContent=(n.p.alcunha||n.p.nome.split(" ")[0]);
+    if(!n.p.respondeu)lab.setAttribute("fill","#8b80a6");
+    g.appendChild(lab);
+
+    gNodes.appendChild(g);
+    // interactions
+    g.addEventListener("mouseenter",e=>showTip(e,n));
+    g.addEventListener("mousemove",e=>moveTip(e));
+    g.addEventListener("mouseleave",hideTip);
+    g.addEventListener("dblclick",()=>gotoProfile(n.id));
+    bindDrag(g,n);
+    return {g,ring,lab,n};
+  });
+
+  function showTip(e,n){
+    const p=n.p;let html="<b>"+p.nome+(p.alcunha?" · "+p.alcunha:"")+"</b>";
+    html+='<span class="tr">'+p.cargo+(p.nucleo==="norte"?" · Norte":"")+"</span>";
+    if(p.respondeu){
+      if(p.trabalhaCom)html+='<span class="tm"><b style="font-size:.7rem">Próximo de:</b> '+p.trabalhaCom+'</span>';
+      html+='<span class="tm" style="color:#a99bd0">Duplo-clique abre o perfil</span>';
+    }else{
+      html+='<span class="tm" style="color:#a99bd0">Mencionado pela equipa (não respondeu)</span>';
+    }
+    tip.innerHTML=html;tip.style.opacity=1;moveTip(e);
+    // highlight neighbours
+    const nb=new Set([n.id]);links.forEach(l=>{if(l.s.id===n.id)nb.add(l.t.id);if(l.t.id===n.id)nb.add(l.s.id);});
+    nodeEls.forEach(o=>o.g.style.opacity = nb.has(o.n.id)?1:0.18);
+    linkEls.forEach((ln,i)=>{const l=links[i];
+      ln.setAttribute("opacity",(l.s.id===n.id||l.t.id===n.id)?0.95:0.04);});
+  }
+  function moveTip(e){tip.style.left=(e.clientX+16)+"px";tip.style.top=(e.clientY+14)+"px";}
+  function hideTip(){tip.style.opacity=0;
+    nodeEls.forEach(o=>o.g.style.opacity=1);
+    linkEls.forEach((ln,i)=>ln.setAttribute("opacity",links[i].tipo==="forte"?0.55:0.5));}
+
+  // ---- drag ----
+  function bindDrag(g,n){
+    let dragging=false;
+    function down(ev){dragging=true;n.fixed=true;g.style.cursor="grabbing";ev.preventDefault();}
+    function move(ev){if(!dragging)return;
+      const pt=clientToSvg(ev);n.x=pt.x;n.y=pt.y;n.vx=n.vy=0;alpha=Math.max(alpha,.5);}
+    function up(){dragging=false;n.fixed=false;g.style.cursor="grab";}
+    g.addEventListener("pointerdown",e=>{down(e);g.setPointerCapture(e.pointerId);});
+    g.addEventListener("pointermove",move);
+    g.addEventListener("pointerup",up);g.addEventListener("pointercancel",up);
+  }
+  function clientToSvg(ev){
+    const r=svg.getBoundingClientRect();
+    return {x:(ev.clientX-r.left-panx)/scale, y:(ev.clientY-r.top-pany)/scale};
+  }
+
+  // ---- zoom / pan ----
+  svg.addEventListener("wheel",e=>{e.preventDefault();
+    const r=svg.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;
+    const f=e.deltaY<0?1.12:0.89;const ns=Math.min(2.6,Math.max(.4,scale*f));
+    panx=mx-(mx-panx)*(ns/scale);pany=my-(my-pany)*(ns/scale);scale=ns;applyT();
+  },{passive:false});
+  let panning=false,sx,sy;
+  svg.addEventListener("pointerdown",e=>{if(e.target===svg||e.target===gRoot){panning=true;sx=e.clientX-panx;sy=e.clientY-pany;}});
+  window.addEventListener("pointermove",e=>{if(panning){panx=e.clientX-sx;pany=e.clientY-sy;applyT();}});
+  window.addEventListener("pointerup",()=>panning=false);
+  document.getElementById("zin").onclick=()=>{scale=Math.min(2.6,scale*1.2);applyT();};
+  document.getElementById("zout").onclick=()=>{scale=Math.max(.4,scale*0.83);applyT();};
+  document.getElementById("zreset").onclick=()=>{scale=1;panx=0;pany=0;applyT();alpha=.9;};
+
+  // ---- force simulation ----
+  let alpha=1;
+  const LINK_LEN=l=>l.tipo==="forte"?92:150;
+  const LINK_K =l=>l.tipo==="forte"?0.045:0.018;
+  function tick(){
+    if(alpha>0.005){
+      // repulsion
+      for(let i=0;i<nodes.length;i++){
+        const a=nodes[i];
+        for(let j=i+1;j<nodes.length;j++){
+          const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y;let d2=dx*dx+dy*dy||0.01;
+          let d=Math.sqrt(d2);const min=(a.r+b.r);
+          let rep=2600/d2;
+          if(d<min+10){rep+= (min+10-d)*0.6/d;}
+          const fx=dx/d*rep, fy=dy/d*rep;
+          if(!a.fixed){a.vx+=fx;a.vy+=fy;}
+          if(!b.fixed){b.vx-=fx;b.vy-=fy;}
+        }
+      }
+      // springs
+      links.forEach(l=>{
+        let dx=l.t.x-l.s.x,dy=l.t.y-l.s.y;let d=Math.sqrt(dx*dx+dy*dy)||0.01;
+        const diff=(d-LINK_LEN(l))*LINK_K(l);
+        const fx=dx/d*diff, fy=dy/d*diff;
+        if(!l.s.fixed){l.s.vx+=fx;l.s.vy+=fy;}
+        if(!l.t.fixed){l.t.vx-=fx;l.t.vy-=fy;}
+      });
+      // gravity to centre
+      nodes.forEach(n=>{if(n.fixed)return;
+        n.vx+=(W/2-n.x)*0.0016;n.vy+=(H/2-n.y)*0.0016;
+        n.vx*=0.86;n.vy*=0.86;n.x+=n.vx*alpha;n.y+=n.vy*alpha;
+        n.x=Math.max(n.r+6,Math.min(W-n.r-6,n.x));
+        n.y=Math.max(n.r+6,Math.min(H-n.r-20,n.y));
+      });
+      alpha*=0.985;
+    }
+    // render
+    linkEls.forEach((ln,i)=>{const l=links[i];
+      ln.setAttribute("x1",l.s.x);ln.setAttribute("y1",l.s.y);
+      ln.setAttribute("x2",l.t.x);ln.setAttribute("y2",l.t.y);});
+    nodeEls.forEach(o=>o.g.setAttribute("transform","translate("+o.n.x+","+o.n.y+")"));
+    requestAnimationFrame(tick);
+  }
+  applyT();tick();
+
+  function resize(){W=svg.clientWidth;H=svg.clientHeight;}
+  window.addEventListener("resize",resize);
+  return {kick:()=>{resize();alpha=Math.max(alpha,.8);}};
+})();
+</script>
+</body>
+</html>
