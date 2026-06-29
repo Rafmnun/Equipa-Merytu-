@@ -178,6 +178,88 @@
     #web{height:520px}
     .cards{grid-template-columns:1fr}
   }
+
+  /* ============ GUIÃO ============ */
+  #guiao{max-width:780px}
+  #guiao .section-note{font-size:1rem}
+  .g-quicknav{position:sticky;top:53px;z-index:30;display:flex;gap:7px;overflow-x:auto;
+    padding:11px 2px;margin:0 0 18px;background:rgba(247,244,251,.94);backdrop-filter:blur(8px);
+    scrollbar-width:none}
+  .g-quicknav::-webkit-scrollbar{display:none}
+  .g-quicknav a{flex:0 0 auto;text-decoration:none;font-weight:700;font-size:.95rem;
+    color:var(--plum);background:#fff;border:1.5px solid var(--line);padding:8px 15px;
+    border-radius:11px;white-space:nowrap}
+  .g-quicknav a[href="#g-avisos"]{color:#b26a00;border-color:#f1cf94;background:#fff4e2}
+
+  .g-block{background:#fff;border:1px solid var(--line);border-radius:18px;
+    box-shadow:var(--shadow);margin:0 0 20px;overflow:hidden;scroll-margin-top:120px}
+  .g-head{background:var(--plum);color:#fff;padding:16px 20px}
+  .g-head.amber{background:#e08a00}
+  .g-pt{display:block;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+    color:#e3d3fb;font-weight:700;margin:0 0 3px}
+  .g-head.amber .g-pt{color:#ffe9c7}
+  .g-head h3{margin:0;font-size:1.35rem;font-weight:800;line-height:1.2;color:#fff}
+  .g-facts{margin:10px 0 0;display:flex;flex-wrap:wrap;gap:7px}
+  .g-f{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:9px;
+    padding:4px 10px;font-size:.84rem;font-weight:600;color:#fff;text-decoration:none}
+  a.g-f{text-decoration:underline;text-underline-offset:2px}
+
+  .g-body{padding:18px 20px 20px;font-size:1.04rem;line-height:1.55}
+  .g-body p{margin:0 0 11px}
+  .g-lbl{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800;
+    color:var(--plum-soft);margin:18px 0 7px}
+  .g-ul{margin:0 0 12px;padding-left:0;list-style:none}
+  .g-ul li{position:relative;padding:0 0 0 24px;margin:0 0 9px}
+  .g-ul li::before{content:"";position:absolute;left:4px;top:11px;width:8px;height:8px;
+    border-radius:50%;background:var(--plum-soft)}
+  .g-steps{margin:0 0 12px;padding-left:0;list-style:none;counter-reset:gs}
+  .g-steps li{position:relative;padding:0 0 0 38px;margin:0 0 11px;counter-increment:gs}
+  .g-steps li::before{content:counter(gs);position:absolute;left:0;top:-1px;width:26px;height:26px;
+    background:var(--plum);color:#fff;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:.85rem;font-weight:800}
+
+  .g-regra{background:var(--plum-faint);border-left:6px solid var(--plum);border-radius:0 12px 12px 0;
+    padding:14px 16px;margin:6px 0 4px}
+  .g-regra .t{font-weight:800;color:var(--strong);margin:0 0 7px;font-size:.97rem}
+  .g-regra .g-ul{margin:0}
+
+  .g-debrief{background:#f3eefc;border:1.5px dashed #c9b6ec;border-radius:13px;padding:14px 16px;margin:4px 0}
+  .g-debrief .t{font-weight:800;color:var(--strong);margin:0 0 8px;font-size:.92rem}
+  .g-debrief .q{font-size:1.1rem;font-weight:600;color:var(--ink);margin:0 0 8px;padding-left:14px;
+    border-left:3px solid var(--plum-soft);line-height:1.4}
+  .g-debrief .q:last-child{margin-bottom:0}
+
+  .g-nomes{display:flex;flex-direction:column;gap:9px;margin:4px 0 6px}
+  .g-nome{display:flex;gap:11px;align-items:flex-start;background:#faf7ff;border:1px solid var(--line);
+    border-radius:12px;padding:11px 13px}
+  .g-tag{flex:0 0 auto;background:var(--plum);color:#fff;font-size:.72rem;font-weight:800;
+    padding:4px 9px;border-radius:7px;text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+  .g-tag.alt{background:#9b86c4}
+  .g-nome .who{font-size:.98rem}
+  .g-nome .who b{color:var(--strong)}
+  .g-nome .who span{color:var(--muted);font-size:.9rem}
+
+  .g-aviso{background:#fff4e2;border:1.5px solid #f1cf94;border-left:6px solid #e08a00;
+    border-radius:0 13px 13px 0;padding:13px 16px;margin:0 0 12px}
+  .g-aviso .t{font-weight:800;color:#b26a00;margin:0 0 7px;font-size:.96rem}
+  .g-aviso p{margin:0}
+  .g-aviso b{color:#8a5200}
+
+  .g-nota{color:var(--muted);font-size:.93rem;font-style:italic;margin:8px 0 0}
+
+  .g-rcard{border:1px solid var(--line);border-radius:13px;padding:13px 14px;margin:0 0 11px;background:#faf7ff}
+  .g-rcard .top{display:flex;align-items:center;gap:9px;margin:0 0 7px}
+  .g-rcard .pin{background:var(--plum);color:#fff;font-weight:800;font-size:.85rem;width:34px;height:30px;
+    border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .g-rcard .rttl{font-weight:800;color:var(--strong);font-size:1.02rem}
+  .g-rcard .rln{font-size:.96rem;margin:3px 0}
+  .g-rcard .rln b{color:var(--plum-soft)}
+
+  @media(max-width:560px){
+    .g-quicknav{top:51px}
+    .g-head h3{font-size:1.25rem}
+    .g-body{font-size:1.05rem}
+  }
 </style>
 </head>
 <body>
@@ -194,6 +276,7 @@
     <button class="tab" role="tab" aria-selected="true" data-panel="rede">Mapa de relações</button>
     <button class="tab" role="tab" aria-selected="false" data-panel="perfis">Perfis</button>
     <button class="tab" role="tab" aria-selected="false" data-panel="rostos">Rostos</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="guiao">Guião</button>
   </div>
 </nav>
 
@@ -229,6 +312,238 @@
     <p class="section-note">Galeria rápida para associar nomes a caras antes do dia. Clica numa pessoa para abrir o
     seu perfil completo.</p>
     <div class="faces" id="faces"></div>
+  </section>
+
+  <!-- ============ GUIÃO ============ -->
+  <section class="panel" id="guiao" role="tabpanel">
+    <p class="section-note">Guião de facilitação da prova de orientação, para usar no terreno. Avisos individuais, regras de cada ponto, perguntas de debrief e nomes sugeridos por papel.</p>
+
+    <div class="g-quicknav">
+      <a href="#g-avisos">⚠️ Avisos</a>
+      <a href="#g-p1">P1</a><a href="#g-p2">P2</a><a href="#g-p3">P3</a>
+      <a href="#g-p4">P4</a><a href="#g-p5">P5</a><a href="#g-resumo">Resumo</a>
+    </div>
+
+    <!-- AVISOS -->
+    <div class="g-block" id="g-avisos">
+      <div class="g-head amber"><span class="g-pt">Ler antes de arrancar</span><h3>⚠️ Cuidados individuais</h3></div>
+      <div class="g-body">
+        <div class="g-aviso">
+          <p class="t">Diogo Paço — limitação física</p>
+          <p>Declarou limitação física (<i>"dependendo da atividade pode ou não fazer"</i>). <b>Fala com ele em privado logo de manhã</b>, antes do P4 (vendas / terreno irregular). Não o escolhas para guiar vendado nem para troços exigentes sem confirmar.</p>
+        </div>
+        <div class="g-aviso">
+          <p class="t">Rita Harries — ouvido esquerdo</p>
+          <p>Operada ao ouvido esquerdo: <b>não pode usar phones nem ter pressão nessa zona</b>. Venda nos olhos não a afeta. Alérgica a pêssego. Se liderar a vela, avisa o monitor — sem água no ouvido.</p>
+        </div>
+        <div class="g-aviso">
+          <p class="t">Alimentação — Med & Liliana</p>
+          <p><b>Med (Mahomed):</b> só carne halal — peixe/vegetariano como alternativa. <b>Liliana:</b> não come derivados de leite. Confirmar no almoço (Monte Verde).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRINCÍPIOS -->
+    <div class="g-block">
+      <div class="g-head"><span class="g-pt">Como conduzir</span><h3>Princípios</h3></div>
+      <div class="g-body">
+        <p><strong>Fio condutor:</strong> liderar, seguir, trocar de papéis, comunicar sem palavras, confiar, decidir e celebrar — sempre de forma indireta. Nunca nomeies o tema.</p>
+        <ul class="g-ul">
+          <li><strong>Silêncio é ferramenta.</strong> Não preenchas pausas. Quem fala primeiro, quem recua — é dado teu.</li>
+          <li><strong>Observa e guarda.</strong> Cada ponto dá-te informação para o seguinte: quem lidera, quem segue, quem ainda não teve voz.</li>
+          <li><strong>Sem coach-speak.</strong> Conversa adulta e real. Metáfora pontual, sim; como atividade, nunca.</li>
+          <li><strong>Só tu sabes a mecânica escondida.</strong> Ninguém sabe que há dois mapas no P2. A ambiguidade é o motor.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- P1 -->
+    <div class="g-block" id="g-p1">
+      <div class="g-head"><span class="g-pt">Partida · Ponto 1</span><h3>Skatepark da Serafina</h3>
+        <div class="g-facts"><a class="g-f" href="https://maps.google.com/?q=38.7227499,-9.1877789" target="_blank">📍 38.7227, -9.1878</a><span class="g-f">⏱ ~30 min</span></div>
+      </div>
+      <div class="g-body">
+        <div class="g-lbl">Acolhimento</div>
+        <ul class="g-ul">
+          <li>WC ficam <strong>junto ao skatepark</strong> — indica logo.</li>
+          <li>Pergunta quem trouxe água, snack e venda. Distribui barritas a quem quiser.</li>
+          <li>Lembra: tens <strong>app com coordenadas</strong>, <strong>2 bússolas</strong>, mapas conforme as regras.</li>
+          <li>Em cada ponto há <strong>fita cor Merytu</strong> — apanham como prova de ponto feito.</li>
+          <li>Equipa única, <strong>não competição</strong> — exceto no P5.</li>
+        </ul>
+        <div class="g-lbl">Roda de expectativas</div>
+        <div class="g-debrief">
+          <p class="q">"O que esperas deste dia?"</p>
+          <p class="q">"De 0 a 10, quão pronto te sentes para começar?"</p>
+        </div>
+        <p class="g-nota">Deixa o silêncio trabalhar. Repara em quem puxa, quem recua — guarda para escolher líderes à frente.</p>
+        <div class="g-lbl">Quebra-gelo: Bingo de coisas em comum</div>
+        <p>Antes de explicar a prova. Cada um procura colegas com quem partilha algo. Incentiva a procurar <strong>quem ainda não conhecem</strong> — Tech e Norte quase não se cruzam com Customer Care/Ops.</p>
+        <div class="g-lbl">Jingle — "toque de reunião"</div>
+        <div class="g-regra">
+          <p class="t">🎵 Criar durante o percurso</p>
+          <p>A equipa cria um jingle próprio. Quando o ouvem, juntam-se. <strong>Intenção: que fique na memória</strong> — algo que semanas depois alguém possa gritar no escritório e a equipa reaja. Liberdade total na forma.</p>
+        </div>
+        <div class="g-lbl">→ Portador P1 para P2</div>
+        <div class="g-regra">
+          <p class="t">🗺️ Mapa visível, depois retirado</p>
+          <p>Toda a equipa <strong>vê o mapa P1→P2 por pouco tempo</strong>, traça o caminho em conjunto, e parte quando <strong>retiras o mapa</strong>. Sem líder, sem regras — decidem juntos e seguem de memória.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="g-block" id="g-p2">
+      <div class="g-head"><span class="g-pt">Ponto 2</span><h3>Dois líderes silenciosos</h3>
+        <div class="g-facts"><a class="g-f" href="https://maps.google.com/?q=38.7206711,-9.1875730" target="_blank">📍 38.7207, -9.1876</a><span class="g-f">⏱ ~20–25 min</span></div>
+      </div>
+      <div class="g-body">
+        <p><strong>Trabalha:</strong> seguir liderança ambígua, comunicação não-verbal, decidir sob tensão.</p>
+        <div class="g-lbl">A montagem (só tu sabes)</div>
+        <p>Entregas <strong>2 mapas que chegam ao mesmo sítio por caminhos diferentes</strong>. Cada um vai para uma só pessoa. <strong>Ninguém sabe que os caminhos diferem — nem os próprios líderes.</strong></p>
+        <div class="g-regra">
+          <p class="t">🤫 Regras aos dois portadores (em privado, em separado)</p>
+          <ul class="g-ul">
+            <li>Não podes falar nem fazer qualquer som.</li>
+            <li>Só tu vês o teu mapa — não o mostras.</li>
+            <li>A tua função é levar o grupo ao próximo ponto.</li>
+          </ul>
+          <p class="g-nota">Não lhes dizes que existe outro mapa. O resto da equipa pode falar.</p>
+        </div>
+        <div class="g-lbl">Nomes sugeridos — 2 líderes fortes</div>
+        <div class="g-nomes">
+          <div class="g-nome"><span class="g-tag">Líder 1</span><div class="who"><b>Mariana Dionísio</b> <span>· Business Dev, Norte. Personalidade marcada, puxa naturalmente.</span></div></div>
+          <div class="g-nome"><span class="g-tag">Líder 2</span><div class="who"><b>Susana Ferreira</b> <span>· Head of BD. Hub comercial, muita gente recorre a ela.</span></div></div>
+          <div class="g-nome"><span class="g-tag alt">Alt.</span><div class="who"><b>Rita Harries</b> ou <b>Gabriel Peixoto</b> <span>· igual peso.</span></div></div>
+        </div>
+        <p class="g-nota">Evita dois que já trabalhem colados — o atrito é mais revelador entre polos diferentes (Norte vs. Lisboa).</p>
+        <div class="g-lbl">Debriefing — comunicação</div>
+        <div class="g-debrief">
+          <p class="t">Pergunta primeiro, deixa-os descobrir que havia dois caminhos:</p>
+          <p class="q">"Então, o que é que se passou aqui?"</p>
+          <p class="q">"Porque decidiram seguir a pessoa que seguiram?"</p>
+          <p class="q">"Gostaram da estratégia?"</p>
+          <p class="q">"Como é seguir um líder que não fala, que não se expressa?"</p>
+        </div>
+        <p class="g-nota">Remate curto e fechado. Não moralizes — a revelação vinda deles vale mais.</p>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="g-block" id="g-p3">
+      <div class="g-head"><span class="g-pt">Ponto 3</span><h3>A história do Seth</h3>
+        <div class="g-facts"><a class="g-f" href="https://maps.google.com/?q=38.7203779,-9.1913640" target="_blank">📍 38.7204, -9.1914</a><span class="g-f">⏱ ~20–25 min</span></div>
+      </div>
+      <div class="g-body">
+        <p><strong>Trabalha:</strong> reconhecer o trabalho invisível, delegação, liderança de quem não é visto.</p>
+        <div class="g-lbl">Conta a história</div>
+        <p>O Seth é <strong>aquela pessoa que faz as coisas que não se veem</strong> — o trabalho de bastidor que ninguém nota enquanto está feito, mas cuja falta se sentiria de imediato. Conta à tua maneira.</p>
+        <div class="g-debrief"><p class="q">"Identificam alguém aqui como o Seth?"</p></div>
+        <p>A pessoa escolhida pelo grupo <strong>lidera este troço.</strong></p>
+        <div class="g-regra">
+          <p class="t">📢 Regras deste líder</p>
+          <ul class="g-ul">
+            <li>O grupo <strong>não fala nem emite som</strong>. Só o líder tem voz.</li>
+            <li>O líder escolhe <strong>2 pessoas para ajudar</strong> a delegar e orientar.</li>
+            <li>Essas 2 pessoas <strong>também não falam</strong> — ajudam em silêncio.</li>
+          </ul>
+        </div>
+        <div class="g-lbl">Quem o grupo tende a escolher</div>
+        <div class="g-nomes">
+          <div class="g-nome"><span class="g-tag">Ideal</span><div class="who"><b>Gabriel Peixoto</b> <span>· o retrato do Seth. Quer "saber se os colegas confiam nele" — se for nomeado, ouve dos colegas que é visto.</span></div></div>
+          <div class="g-nome"><span class="g-tag alt">Alt.</span><div class="who"><b>Liliana Tavares</b> <span>· trabalho financeiro de bastidor. Justo e plausível.</span></div></div>
+          <div class="g-nome"><span class="g-tag alt">Alt.</span><div class="who"><b>Diogo Paço</b> <span>· desbloqueio técnico invisível. ⚠️ confirmar limitação física se troço exigente.</span></div></div>
+        </div>
+        <p class="g-nota">A escolha é do grupo. O valor está em quem é escolhido reconhecer-se reconhecido.</p>
+      </div>
+    </div>
+
+    <!-- P4 -->
+    <div class="g-block" id="g-p4">
+      <div class="g-head"><span class="g-pt">Ponto 4</span><h3>Guiar às cegas + foto</h3>
+        <div class="g-facts"><a class="g-f" href="https://maps.google.com/?q=38.7212550,-9.1912701" target="_blank">📍 38.7213, -9.1913</a><span class="g-f">⏱ ~20 min</span></div>
+      </div>
+      <div class="g-body">
+        <p><strong>Trabalha:</strong> confiança total, dar voz a quem normalmente não a tem.</p>
+        <div class="g-lbl">Sequência</div>
+        <ol class="g-steps">
+          <li>Tira a <strong>foto criativa de grupo</strong>.</li>
+          <li>Escolhe o líder: a <strong>pessoa com menos voz</strong>. Conduz o grupo até ao P5.</li>
+          <li><strong>Só a equipa vai vendada</strong> — o líder vê.</li>
+          <li><strong>Não há mapa: és tu que indicas o caminho ao líder</strong>, para ele se focar nas pessoas.</li>
+          <li>No P5, posiciona todos <strong>virados para a vista</strong>. Só então pede para tirarem as vendas.</li>
+        </ol>
+        <div class="g-aviso">
+          <p class="t">⚠️ Confirmar antes</p>
+          <p><b>Diogo</b> — se a participação vendado for sensível pela limitação, ajusta. <b>Rita</b> — venda nos olhos é segura (limitação é no ouvido); só evita pressão na cabeça.</p>
+        </div>
+        <div class="g-lbl">Nomes — pessoa de menos voz</div>
+        <div class="g-nomes">
+          <div class="g-nome"><span class="g-tag">Principal</span><div class="who"><b>Gabriel Peixoto</b> <span>· central mas inseguro quanto a ser confiado. Guiar às cegas responde à pergunta que ele trouxe. (Se já foi o Seth no P3, passa ao próximo.)</span></div></div>
+          <div class="g-nome"><span class="g-tag alt">Alt.</span><div class="who"><b>Beatriz Santos</b> <span>· reservada, fora do eixo de Lisboa, quer conhecer mais os colegas.</span></div></div>
+          <div class="g-nome"><span class="g-tag alt">Alt.</span><div class="who"><b>Med (Mahomed)</b> <span>· o mais periférico na rede. Pô-lo a guiar é o gesto mais simbólico.</span></div></div>
+        </div>
+        <div class="g-lbl">Debriefing</div>
+        <div class="g-debrief">
+          <p class="q">Ao grupo: "Como se sentiram a ser guiados sem ver nada?"</p>
+          <p class="q">Ao líder: "Como te sentiste a guiar o grupo?"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- P5 -->
+    <div class="g-block" id="g-p5">
+      <div class="g-head"><span class="g-pt">Ponto 5 · Final</span><h3>Teatro: pitch da empresa</h3>
+        <div class="g-facts"><a class="g-f" href="https://maps.google.com/?q=38.7211660,-9.1934109" target="_blank">📍 38.7212, -9.1934</a><span class="g-f">⏱ ~25–30 min</span></div>
+      </div>
+      <div class="g-body">
+        <p><strong>Trabalha:</strong> colaboração criativa, misturar departamentos afastados, celebração conjunta.</p>
+        <div class="g-lbl">A atividade</div>
+        <ul class="g-ul">
+          <li>Divide em <strong>2 equipas (uma de 7, outra de 8)</strong>.</li>
+          <li>Cada uma faz <strong>o seu pitch da Merytu em peça de teatro</strong>, ~3 min.</li>
+          <li><strong>Gravas as duas peças.</strong></li>
+          <li>Acaba em grande — aplauso, celebração, a vista atrás.</li>
+        </ul>
+        <div class="g-lbl">Composição — misturar quem não se mistura</div>
+        <div class="g-nomes">
+          <div class="g-nome"><span class="g-tag">Equipa A · 8</span><div class="who"><b>Mariana</b> (motor) · <b>Diogo</b> (ponte Tech) · <b>Liliana</b> · <b>Gabriel</b> · <b>Rita</b> <span>+ 3 não-respondentes (ex.: Lorena, Bárbara, Mateus).</span></div></div>
+          <div class="g-nome"><span class="g-tag">Equipa B · 7</span><div class="who"><b>Susana</b> (motor) · <b>Ronaldo</b> (Tech) · <b>Med</b> (integrar) · <b>Beatriz</b> <span>+ 3 não-respondentes (ex.: João, Joana, Carolina).</span></div></div>
+        </div>
+        <p class="g-nota">Separei Mariana de Susana (os dois polos); um Tech em cada lado; Med e Beatriz (periféricos) caem onde têm pontes. Ajusta os não-respondentes no terreno.</p>
+        <div class="g-lbl">→ Transição para a tarde</div>
+        <div class="g-regra">
+          <p class="t">⛵ A caminho do almoço</p>
+          <p><strong>Mantém os grupos divididos.</strong> Cada grupo escolhe <strong>uma pessoa para o liderar na vela</strong>. Encorajar: Equipa A → <b>Gabriel</b> ou <b>Rita</b>; Equipa B → <b>Susana</b> ou <b>Ronaldo</b>. Proposta tua, decisão do grupo. <span class="g-nota">Se a Rita liderar a vela: avisar o monitor sobre o ouvido.</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUMO -->
+    <div class="g-block" id="g-resumo">
+      <div class="g-head"><span class="g-pt">De uma olhada</span><h3>Papéis por ponto</h3></div>
+      <div class="g-body">
+        <div class="g-rcard"><div class="top"><span class="pin">P1</span><span class="rttl">Mapa partilhado</span></div>
+          <p class="rln"><b>Regra:</b> veem o mapa, traçam juntos, partem quando o retiras.</p><p class="rln"><b>Nome:</b> — decisão coletiva.</p></div>
+        <div class="g-rcard"><div class="top"><span class="pin">P2</span><span class="rttl">2 líderes silenciosos</span></div>
+          <p class="rln"><b>Regra:</b> 2 mapas diferentes sem se saber; não falam, não mostram.</p><p class="rln"><b>Nome:</b> Mariana + Susana (ou Rita / Gabriel).</p></div>
+        <div class="g-rcard"><div class="top"><span class="pin">P3</span><span class="rttl">O Seth</span></div>
+          <p class="rln"><b>Regra:</b> só o líder fala; escolhe 2 ajudantes mudos.</p><p class="rln"><b>Nome:</b> Gabriel / Liliana / Diogo*.</p></div>
+        <div class="g-rcard"><div class="top"><span class="pin">P4</span><span class="rttl">Guiar às cegas</span></div>
+          <p class="rln"><b>Regra:</b> equipa vendada, líder vê; tu indicas o caminho.</p><p class="rln"><b>Nome:</b> Gabriel / Beatriz / Med*.</p></div>
+        <div class="g-rcard"><div class="top"><span class="pin">P5</span><span class="rttl">Teatro · 2 equipas</span></div>
+          <p class="rln"><b>Regra:</b> peça de ~3 min cada; gravas. Depois escolhem líder da vela.</p><p class="rln"><b>Nome:</b> ver composição.</p></div>
+        <p class="g-nota">* Não repetir a mesma pessoa em P3 e P4. Confirmar limitação do Diogo antes de troços exigentes/vendado.</p>
+        <div class="g-lbl">Logística — transição e tarde</div>
+        <ul class="g-ul">
+          <li><strong>12h30</strong> — Almoço no Monte Verde (~400m / 7 min a pé NE da chegada). Halal (Med), sem lácteos (Liliana), pêssego (Rita).</li>
+          <li><strong>14h00</strong> — Saída para a vela.</li>
+          <li><strong>14h45</strong> — Encontro na carrinha, Doca do Bom Sucesso, frente à porta nº1, entre BP e Vela Latina. <strong>A vela é surpresa.</strong></li>
+          <li><strong>Contacto de campo:</strong> 910 222 383.</li>
+        </ul>
+      </div>
+    </div>
+
   </section>
 </main>
 
